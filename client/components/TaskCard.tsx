@@ -173,14 +173,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     borderWidth: 1,
     borderColor: '#E5E7EB',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
+    // Remove deprecated shadow* props and use boxShadow for web compatibility
+    boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
   },
   header: {
     flexDirection: 'row',

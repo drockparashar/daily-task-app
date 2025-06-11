@@ -11,9 +11,11 @@ import { router } from 'expo-router';
 import { useTask } from '@/context/TaskContext';
 import TaskCard from '@/components/TaskCard';
 import { Plus, Calendar } from 'lucide-react-native';
+import { useAuth } from '@/context/AuthContext';
 
 export default function Home() {
   const { getTodaysTasks, tasks, isLoading } = useTask();
+  const { user, logout } = useAuth();
   const todaysTasks = getTodaysTasks();
 
   const formatDate = (date: Date) => {
@@ -39,7 +41,7 @@ export default function Home() {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <View>
-          <Text style={styles.greeting}>Good day, Farmer!</Text>
+          <Text style={styles.greeting}>Good day, {user || 'Farmer'}!</Text>
           <Text style={styles.date}>{formatDate(new Date())}</Text>
         </View>
         <TouchableOpacity
@@ -47,6 +49,12 @@ export default function Home() {
           onPress={() => router.push('/log-task')}
         >
           <Plus size={24} color="#FFFFFF" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.logoutButton}
+          onPress={logout}
+        >
+          <Text style={styles.logoutText}>Logout</Text>
         </TouchableOpacity>
       </View>
 
@@ -169,14 +177,22 @@ const styles = StyleSheet.create({
     height: 48,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    // Remove deprecated shadow* props and use boxShadow for web compatibility
+    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+  },
+  logoutButton: {
+    marginLeft: 12,
+    backgroundColor: '#F87171',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logoutText: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: 14,
   },
   content: {
     flex: 1,
